@@ -5,7 +5,7 @@ Created on Dec 9, 2014
 '''
 
 import time
-import Tkinter
+import Tkinter, tkFont
 import Pmw
 from tkintertable.Tables import TableCanvas
 from tkintertable.TableModels import TableModel
@@ -59,7 +59,8 @@ class TelemetryPanel(object):
         font = self.__config.get('tables', 'font')
         font_size = self.__config.get('tables', 'font_size')
         self.__table.thefont = (font, font_size)
-        self.__table.rowheight= int(font_size) + 5
+        #set row height based on font
+        self.__table.rowheight= int(tkFont.Font(font=font, size=font_size).metrics('linespace'))
         self.__table.createTableFrame()
         self.__table.redrawTable()
 
@@ -165,26 +166,42 @@ class TelemetryPanel(object):
         Optimally adjust col widths to accomodate the longest entry
         in each column - usually only called  on first redraw
         """
-        #self.cols = self.model.getColumnCount()
+        #start with the built-in method, even though it doesn't seem to work? Maybe it doesn't know about high DPI?
+        self.__table.adjustColumnWidths()
+        
+        #find the widest column header
         try:
             fontsize = self.__table.thefont[1]
         except:
             fontsize = self.__table.fontsize
-        scale = 10.5 * float(fontsize)/12
+        font_size = self.__config.get('tables', 'font_size')
+        font = self.__config.get('tables', 'font')
+        titlefont = tkFont.Font(font=font, size=font_size, weight='bold')
+        
+        # go through each column, and bump them up as needed
         for col in range(self.__table.cols):
-            colname = self.__table.model.getColumnName(col)
-            if self.__table.model.columnwidths.has_key(colname):
-                w = self.__table.model.columnwidths[colname]
-            else:
-                w = self.__table.cellwidth
-            maxlen = self.__table.model.getlongestEntry(col)
-            size = maxlen * scale
-            if size < w:
-                continue
-            #print col, size, self.cellwidth
-            if size >= self.__table.maxcellwidth:
-                size = self.__table.maxcellwidth
-            self.__table.model.columnwidths[colname] = size + float(fontsize)/12*6
+          colname = self.__table.model.getColumnName(col)
+          maxwidth = titlefont.measure(colname)
+          
+          #get widest entry in the column
+          collist = self.__table.model.getColCells(col)
+          for c in collist:
+            try:
+                width = titlefont.measure(c)
+            except UnicodeEncodeError:
+                pass
+            if width > maxwidth:
+                maxwidth = width
+          
+          maxwidth += titlefont.measure(" ")
+          
+          #get current col width
+          if self.__table.model.columnwidths.has_key(colname):
+              w = self.__table.model.columnwidths[colname]
+          else:
+              w = self.__table.cellwidth
+          if (maxwidth) > w:
+            self.__table.model.columnwidths[colname] = maxwidth
         return
     
     def refresh(self): 

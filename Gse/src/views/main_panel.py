@@ -147,17 +147,17 @@ class TopPanel(object):
 
         m=menuBar.addmenu('File', 'New..., Save..., Load..., Save Windows..., Restore Windows..., About...')
         menuBar.addmenuitem('File', 'command', 'Create a new main window.',
-                    font=('StingerLight', 14), label='New...', command=self.new)
+                    label='New...', command=self.new)
         menuBar.addmenuitem('File', 'command', 'Save to file cooresponding to selected notebook pane.',
-                    font=('StingerLight', 14), label='Save...', command=self.save)
+                    label='Save...', command=self.save)
         menuBar.addmenuitem('File', 'command', 'Load to file cooresponding to selected notebook pane.',
-                    font=('StingerLight', 14), label='Load...', command=self.load)
+                    label='Load...', command=self.load)
         menuBar.addmenuitem('File', 'command', 'Program Information.',
-                    font=('StingerLight', 14), label='About...', command=self.about)
+                    label='About...', command=self.about)
         menuBar.addmenuitem('File', 'command', 'Save Window Configuration...',
-                label='Save Window Configuration', font=('StingerLight', 14), command=self.save_window_configuration)        
+                label='Save Window Configuration', command=self.save_window_configuration)        
         menuBar.addmenuitem('File', 'command', 'Restore Windows...',
-                    label='Restore Windows', font=('StingerLight', 14), command=self.restore_windows)
+                    label='Restore Windows', command=self.restore_windows)
         menuBar.addmenuitem('File', 'separator')
         menuBar.addmenuitem('File', 'command',
                     'Exit the application', label='Exit', command=self.exit)
@@ -165,11 +165,11 @@ class TopPanel(object):
         if self.__top == True:
             m2=menuBar.addmenu('TCP Server', 'Launch..., Connect..., Kill..')
             menuBar.addmenuitem('TCP Server', 'command', 'Start a TCP Threaded Socket Server in terminal',
-                                font=('StingerLight', 14), label='Launch...', command=self.startTCP)
+                                label='Launch...', command=self.startTCP)
             menuBar.addmenuitem('TCP Server', 'command', 'Connect To Socket Server',
-                                font=('StingerLight', 14), label='Connect...', command=self.connectTCP)
+                                label='Connect...', command=self.connectTCP)
             menuBar.addmenuitem('TCP Server', 'command', 'Kill TCP Threaded Socket Server and terminal',
-                                font=('StingerLight', 14), label='Kill...', command=self.killTCP)
+                                label='Kill...', command=self.killTCP)
 
     # Menu callbacks
     def new(self):
