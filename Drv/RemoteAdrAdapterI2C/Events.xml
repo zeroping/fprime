@@ -1,0 +1,56 @@
+<events>
+    <event id="0" name="REMADR_FailedTransaction" severity="WARNING_HI" format_string = "Failed to get an ack from address %d" >
+        <comment>
+        UART open error
+        </comment>
+        <args>
+            <arg name="error" type="U16">
+                <comment>I2C address</comment>
+            </arg>
+        </args>
+    </event>
+  
+    <!-- Short Transaction error -->
+    <event id="1" name="REMADR_ShortTransaction" severity="WARNING_HI" format_string = "Short I2C Transaction with address %d" >
+        <comment>
+        UART open error
+        </comment>
+        <args>
+            <arg name="error" type="U16">
+                <comment>I2C address</comment>
+            </arg>
+        </args>
+    </event>
+    <event id="2" name="REMADR_Read" severity="ACTIVITY_LO" format_string = "Read a byte from %x:%x: %x" >
+        <comment>
+        Requested to read from an address
+        </comment>
+        <args>
+            <arg name="i2caddress" type="U8">
+                <comment>I2C address</comment>
+            </arg>
+            <arg name="registeraddress" type="U8">
+                <comment>reg address</comment>
+            </arg>
+            <arg name="value" type="U8">
+                <comment>value</comment>
+            </arg>
+        </args>
+    </event>
+    <event id="3" name="REMADR_Write" severity="ACTIVITY_LO" format_string = "Write a byte to %x:%x: %x" >
+        <comment>
+        Requested to read from an address
+        </comment>
+        <args>
+            <arg name="i2caddress" type="U8">
+                <comment>I2C address</comment>
+            </arg>
+            <arg name="registeraddress" type="U8">
+                <comment>reg address</comment>
+            </arg>
+            <arg name="value" type="U8">
+                <comment>value</comment>
+            </arg>
+        </args>
+    </event>
+</events>

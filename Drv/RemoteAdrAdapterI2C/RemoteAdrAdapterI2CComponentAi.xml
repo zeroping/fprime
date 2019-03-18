@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../Autocoders/schema/ISF/component_schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+
+<component name="RemoteAdrAdapterI2C" kind="passive" namespace="Drv" modeler="true">
+
+    <import_port_type>Fw/Tlm/TlmPortAi.xml</import_port_type>
+    <import_port_type>Fw/Log/LogPortAi.xml</import_port_type>
+    <import_port_type>Fw/Buffer/BufferSendPortAi.xml</import_port_type>
+    <import_port_type>Fw/Log/LogTextPortAi.xml</import_port_type>
+    <import_port_type>Drv/RemoteAdrPorts/RemoteAdrReadBufferPortAi.xml</import_port_type>
+    <import_port_type>Drv/RemoteAdrPorts/RemoteAdrWriteBufferPortAi.xml</import_port_type>
+    <import_port_type>Drv/RemoteAdrPorts/RemoteAdrReadPortAi.xml</import_port_type>
+    <import_port_type>Drv/RemoteAdrPorts/RemoteAdrWritePortAi.xml</import_port_type>
+    <import_port_type>Drv/I2CDriverPorts/I2CReadWritePortAi.xml</import_port_type>
+<!--     <import_port_type>Drv/I2CDriverPorts/I2CConfigPortAi.xml</import_port_type> -->
+    <import_dictionary>Drv/RemoteAdrAdapterI2C/Events.xml</import_dictionary>
+    <import_dictionary>Drv/RemoteAdrAdapterI2C/Telemetry.xml</import_dictionary>
+    <ports>
+    
+
+        <port name="Tlm" data_type="Fw::Tlm"  kind="output" role="Telemetry"    max_number="1">
+        </port>
+
+        <port name="Log" data_type="Fw::Log"  kind="output" role="LogEvent"    max_number="1">
+        </port>
+
+        <port name="LogText" data_type="Fw::LogText"  kind="output" role="LogTextEvent"    max_number="1">
+        </port>
+
+  <!--      <port name="readBufferSend" data_type="Fw::BufferSend"  kind="sync_input"    max_number="1">
+        </port>-->
+        
+        <port name="I2CReadWrite" data_type="Drv::I2CReadWrite"  kind="output"    max_number="1">
+        </port>
+        
+        <port name="remoteAdrBufferWrite" data_type="Drv::RemoteAdrWriteBuffer"  kind="sync_input"  max_number="1">
+        </port>
+
+         <port name="remoteAdrWrite" data_type="Drv::RemoteAdrWrite"  kind="sync_input"  max_number="1">
+        </port>
+
+         <port name="remoteAdrBufferRead" data_type="Drv::RemoteAdrReadBuffer"  kind="sync_input"  max_number="1">
+        </port>
+
+         <port name="remoteAdrRead" data_type="Drv::RemoteAdrRead"  kind="sync_input"  max_number="1">
+        </port>
+
+    </ports>
+
+</component>

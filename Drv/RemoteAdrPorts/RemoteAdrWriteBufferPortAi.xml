@@ -1,0 +1,16 @@
+<interface name="RemoteAdrWriteBuffer" namespace="Ref">
+    <import_serializable_type>Fw/Buffer/BufferSerializableAi.xml</import_serializable_type>
+    <import_serializable_type>Drv/RemoteAdrPorts/RemoteAdrAdapterI2CStatusSerializableAi.xml</import_serializable_type>
+    <comment>
+    Writes one or more bytes from a buffer into sequential addresses of a remote I2C device's address space, like many devices expect. This is for an 8-bit address space for now.
+    </comment>
+    <args>
+        <arg name="baseaddr" type="U8">
+          <comment>The address that the first byte of the buffer will be read from, with read sequentially increasing from there</comment>
+		</arg>
+        <arg name="serBuffer" type="Fw::Buffer" pass_by="reference">
+           <comment>Buffer containing data to write at remote address. We will attempt to write as many bytes as there are in the buffer.</comment>
+        </arg>
+    </args>
+    <return type="Drv::RemoteAdrAdapterI2CStatus"/>
+</interface>

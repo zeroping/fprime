@@ -1,0 +1,16 @@
+<interface name="RemoteAdrRead" namespace="Ref">
+    <import_serializable_type>Fw/Buffer/BufferSerializableAi.xml</import_serializable_type>
+    <import_serializable_type>Drv/RemoteAdrPorts/RemoteAdrAdapterI2CStatusSerializableAi.xml</import_serializable_type>
+    <comment>
+    Reads one byte from addresse of a remote I2C device's address space, like many devices expect. This is for an 8-bit address space for now.
+    </comment>
+    <args>
+        <arg name="baseaddr" type="U8">
+          <comment>The device address that we will read from</comment>
+		</arg>
+        <arg name="value" type="U8" pass_by="pointer">
+           <comment>value to be filled with the byte that we get back from the device.</comment>
+        </arg>
+    </args>
+    <return type="Drv::RemoteAdrAdapterI2CStatus"/>
+</interface>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?oxygen RNGSchema="file:../xml/ISF_Component_Schema.rnc" type="compact"?>
+
+<!--====================================================================== 
+
+  Fw
+  Serializable Type: Buffer
+
+======================================================================-->
+
+<serializable namespace="Drv" name="RemoteAdrAdapterI2CStatus">
+  <comment>
+  A return status for remote address requests
+  </comment>
+  <members>
+    <member 
+      name="managerID" 
+      type="U32" 
+      comment="The ID of the buffer manager that allocated this buffer"
+    />
+    <member 
+      name="bufferID"
+      type="U32"
+      comment="The ID of this buffer"
+    />
+    <member
+      name="data"
+      type="U64"
+      comment="A pointer to the data"
+    />
+    <member
+      name="size"
+      type="U32"
+      comment="The data size in bytes"
+    />
+  </members>
+</serializable>
+

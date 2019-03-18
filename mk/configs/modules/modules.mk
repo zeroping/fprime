@@ -65,8 +65,8 @@ SVC_MODULES := \
 	Svc/WatchDog \
 	Svc/FileUplink \
 	Svc/FileDownlink \
-    Svc/AssertFatalAdapter \
-    Svc/FatalHandler \
+	Svc/AssertFatalAdapter \
+	Svc/FatalHandler \
 	Svc/FileManager
 
 DEMO_DRV_MODULES := \
@@ -77,10 +77,12 @@ LINUX_DRV_MODULES := \
 	Drv/LinuxGpioDriver \
 	Drv/LinuxSerialDriver \
 	Drv/LinuxSpiDriver \
+	Drv/RemoteAdrAdapterI2C \
 	Drv/SerialDriverPorts \
 	Drv/SpiDriverPorts \
-	Drv/GpioDriverPorts
-	
+	Drv/GpioDriverPorts \
+	Drv/RemoteAdrPorts \
+	Drv/I2CDriverPorts
 
 REF_MODULES := \
 	Ref/Top \
