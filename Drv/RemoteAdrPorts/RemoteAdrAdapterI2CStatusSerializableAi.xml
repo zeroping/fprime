@@ -13,26 +13,13 @@
   A return status for remote address requests
   </comment>
   <members>
-    <member 
-      name="managerID" 
-      type="U32" 
-      comment="The ID of the buffer manager that allocated this buffer"
-    />
-    <member 
-      name="bufferID"
-      type="U32"
-      comment="The ID of this buffer"
-    />
-    <member
-      name="data"
-      type="U64"
-      comment="A pointer to the data"
-    />
-    <member
-      name="size"
-      type="U32"
-      comment="The data size in bytes"
-    />
+    <member name="retval" type="ENUM">
+      <enum name="RemoteAdrReturn">
+          <item name="REMOTEADR_SUCCESS"/>
+          <item name="REMOTEADR_NOT_ENOUGH_BYTES"/>
+          <item name="REMOTEADR_FAILED"/>
+      </enum>
+    </member>
   </members>
 </serializable>
 

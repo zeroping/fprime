@@ -27,6 +27,10 @@
    <import_component_type>Drv/LinuxGpioDriver/LinuxGpioDriverComponentAi.xml</import_component_type>
    <import_component_type>Drv/LinuxSerialDriver/LinuxSerialDriverComponentAi.xml</import_component_type>
    <import_component_type>Drv/LinuxSpiDriver/LinuxSpiDriverComponentAi.xml</import_component_type>
+   
+   <import_component_type>Drv/LinuxI2CDriver/LinuxI2CDriverComponentAi.xml</import_component_type>
+   <import_component_type>Drv/RemoteAdrAdapterI2C/RemoteAdrAdapterI2CComponentAi.xml</import_component_type>
+   <import_component_type>Drv/AccelMPU9250/AccelMPU9250ComponentAi.xml</import_component_type>
 
    <import_component_type>RPI/RpiDemo/RpiDemoComponentAi.xml</import_component_type>
 
@@ -78,6 +82,10 @@
    <instance namespace="Drv" name="gpio25Drv" type="LinuxGpioDriver" base_id="2103"  base_id_window="1" />
    <instance namespace="Drv" name="gpio17Drv" type="LinuxGpioDriver" base_id="2104"  base_id_window="1" />
    <instance namespace="Drv" name="spiDrv" type="LinuxSpiDriver" base_id="2200"  base_id_window="20" />
+   
+   <instance namespace="Drv" name="i2cDrv" type="LinuxI2CDriver" base_id="2250"  base_id_window="10" />
+   <instance namespace="Drv" name="remoteadri2c" type="RemoteAdrAdapterI2C" base_id="2260"  base_id_window="10" />
+   <instance namespace="Drv" name="mpu9250" type="AccelMPU9250" base_id="2270"  base_id_window="10" />
 
    <instance namespace="Rpi" name="rpiDemo" type="RpiDemo" base_id="2300"  base_id_window="20" />
 
@@ -145,6 +153,10 @@
         <source component = "cmdDisp" port = "compCmdSend" type = "Cmd" num = "6"/>
         <target component = "rpiDemo" port = "CmdDisp" type = "Cmd" num = "0"/>
    </connection>
+    <connection name = "AccelDisp">
+        <source component = "cmdDisp" port = "compCmdSend" type = "Cmd" num = "7"/>
+        <target component = "mpu9250" port = "CmdDisp" type = "Cmd" num = "0"/>
+   </connection>
    
     <!-- Command Reply Ports - Go to the same response port on the dispatcher -->
 
@@ -174,6 +186,10 @@
    </connection>
    <connection name = "RpiDemoReply">
        <source component = "rpiDemo" port = "CmdStatus" type = "CmdResponse" num = "0"/>
+        <target component = "cmdDisp" port = "compCmdStat" type = "CmdResponse" num = "0"/>
+   </connection>
+   <connection name = "AccelReply">
+        <source component = "mpu9250" port = "CmdStatus" type = "CmdResponse" num = "0"/>
         <target component = "cmdDisp" port = "compCmdStat" type = "CmdResponse" num = "0"/>
    </connection>
 
@@ -276,6 +292,19 @@
         <target component = "eventLogger" port = "LogRecv" type = "Log" num = "0"/>
    </connection>
    
+   <connection name = "i2clog">
+       <source component = "i2cDrv" port = "Log" type = "Log" num = "0"/>
+        <target component = "eventLogger" port = "LogRecv" type = "Log" num = "0"/>
+   </connection>
+   <connection name = "remadrlog">
+       <source component = "remoteadri2c" port = "Log" type = "Log" num = "0"/>
+        <target component = "eventLogger" port = "LogRecv" type = "Log" num = "0"/>
+   </connection>
+   <connection name = "accellog">
+       <source component = "mpu9250" port = "Log" type = "Log" num = "0"/>
+        <target component = "eventLogger" port = "LogRecv" type = "Log" num = "0"/>
+   </connection>
+   
    <!-- Event Logger Text Connections -->
    
    <connection name = "CmdSeqTextLog">
@@ -346,6 +375,19 @@
        <source component = "gpio17Drv" port = "LogText" type = "LogText" num = "0"/>
         <target component = "textLogger" port = "TextLogger" type = "LogText" num = "0"/>
    </connection>
+   
+   <connection name = "i2cTextLog">
+       <source component = "i2cDrv" port = "LogText" type = "LogText" num = "0"/>
+        <target component = "textLogger" port = "TextLogger" type = "LogText" num = "0"/>
+   </connection>
+   <connection name = "remadrTextLog">
+       <source component = "remoteadri2c" port = "LogText" type = "LogText" num = "0"/>
+        <target component = "textLogger" port = "TextLogger" type = "LogText" num = "0"/>
+   </connection>
+   <connection name = "accelTextLog">
+       <source component = "mpu9250" port = "LogText" type = "LogText" num = "0"/>
+        <target component = "textLogger" port = "TextLogger" type = "LogText" num = "0"/>
+   </connection>
 
    <!-- Telemetry Connections -->
 
@@ -391,6 +433,19 @@
    </connection>
    <connection name = "SpiTlm">
        <source component = "spiDrv" port = "Tlm" type = "Tlm" num = "0"/>
+        <target component = "chanTlm" port = "TlmRecv" type = "Tlm" num = "0"/>
+   </connection>
+   
+   <connection name = "i2cTlm">
+       <source component = "i2cDrv" port = "Tlm" type = "Tlm" num = "0"/>
+        <target component = "chanTlm" port = "TlmRecv" type = "Tlm" num = "0"/>
+   </connection>
+   <connection name = "remadrTlm">
+       <source component = "remoteadri2c" port = "Tlm" type = "Tlm" num = "0"/>
+        <target component = "chanTlm" port = "TlmRecv" type = "Tlm" num = "0"/>
+   </connection>
+   <connection name = "accelTlm">
+       <source component = "mpu9250" port = "Tlm" type = "Tlm" num = "0"/>
         <target component = "chanTlm" port = "TlmRecv" type = "Tlm" num = "0"/>
    </connection>
 
@@ -708,7 +763,22 @@
 
    <connection name = "spi">
        <source component = "rpiDemo" port = "SpiReadWrite" type = "SpiReadWrite" num = "0"/>
-        <target component = "spiDrv" port = "SpiReadWrite" type = "SpiReadWrite" num = "0"/>
+       <target component = "spiDrv" port = "SpiReadWrite" type = "SpiReadWrite" num = "0"/>
    </connection>
+   
+   <!-- I2C connection -->
+   
+   <connection name = "i2c">
+        <source component = "remoteadri2c" port = "I2CReadWrite" type = "I2CReadWrite" num = "0"/>
+        <target component = "i2cDrv" port = "I2CReadWrite" type = "I2CReadWrite" num = "0"/>
+   </connection>
+   
+   <!-- I2C remote address connection -->
+   
+   <connection name = "remoteaddri2c">
+        <source component = "mpu9250" port = "remoteAdrRead" type = "RemoteAdrRead" num = "0"/>
+        <target component = "remoteadri2c" port = "remoteAdrRead" type = "RemoteAdrRead" num = "0"/>
+   </connection>
+   
 
 </assembly>

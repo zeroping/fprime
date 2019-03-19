@@ -58,44 +58,44 @@ namespace Drv {
   // Handler implementations for user-defined typed input ports
   // ----------------------------------------------------------------------
 
-  void RemoteAdrAdapterI2CComponentImpl ::
+  Drv::RemoteAdrAdapterI2CStatus RemoteAdrAdapterI2CComponentImpl ::
     remoteAdrBufferWrite_handler(
         const NATIVE_INT_TYPE portNum,
         U8 baseaddr,
         Fw::Buffer &serBuffer
     )
   {
-    // TODO
+    return Drv::RemoteAdrAdapterI2CStatus(REMOTEADR_FAILED);
   }
 
-  void RemoteAdrAdapterI2CComponentImpl ::
+  Drv::RemoteAdrAdapterI2CStatus RemoteAdrAdapterI2CComponentImpl ::
     remoteAdrWrite_handler(
         const NATIVE_INT_TYPE portNum,
         U8 baseaddr,
         U8 value
     )
   {
-    // TODO
+    return Drv::RemoteAdrAdapterI2CStatus(REMOTEADR_FAILED);
   }
 
-  void RemoteAdrAdapterI2CComponentImpl ::
+  Drv::RemoteAdrAdapterI2CStatus RemoteAdrAdapterI2CComponentImpl ::
     remoteAdrBufferRead_handler(
         const NATIVE_INT_TYPE portNum,
         U8 baseaddr,
         Fw::Buffer &serBuffer
     )
   {
-    // TODO
+    return Drv::RemoteAdrAdapterI2CStatus(REMOTEADR_FAILED);
   }
 
-  void RemoteAdrAdapterI2CComponentImpl ::
+  Drv::RemoteAdrAdapterI2CStatus RemoteAdrAdapterI2CComponentImpl ::
     remoteAdrRead_handler(
         const NATIVE_INT_TYPE portNum,
         U8 baseaddr,
         U8 *value
     )
   {
-    // TODO
+    return Drv::RemoteAdrAdapterI2CStatus(REMOTEADR_FAILED);
   }
 
 } // end namespace Drv

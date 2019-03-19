@@ -7,7 +7,7 @@
     <args>
         <arg name="baseaddr" type="U8">
           <comment>The device address that the value byte will be written to</comment>
-		</arg>
+        </arg>
         <arg name="value" type="U8">
            <comment>Value to write at the given address</comment>
         </arg>

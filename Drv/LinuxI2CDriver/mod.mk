@@ -1,8 +1,10 @@
-SRC = LinuxI2CDriverComponentAi.xml LinuxI2CDriverComponentImplCommon.cpp
+SRC = LinuxI2CDriverComponentAi.xml LinuxI2CDriverComponentImplCommon.cpp LinuxI2CDriverComponentImpl.cpp
 
 SRC_SDFLIGHT = LinuxI2CDriverComponentImpl.cpp
 
 SRC_LINUX =  LinuxI2CDriverComponentImpl.cpp
+
+SRC_RASPBIAN =  LinuxI2CDriverComponentImpl.cpp
 
 SRC_CYGWIN = LinuxI2CDriverComponentImpl.cpp
 

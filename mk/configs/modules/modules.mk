@@ -77,12 +77,15 @@ LINUX_DRV_MODULES := \
 	Drv/LinuxGpioDriver \
 	Drv/LinuxSerialDriver \
 	Drv/LinuxSpiDriver \
+	Drv/LinuxI2CDriver \
 	Drv/RemoteAdrAdapterI2C \
+	Drv/AccelMPU9250 \
 	Drv/SerialDriverPorts \
 	Drv/SpiDriverPorts \
 	Drv/GpioDriverPorts \
 	Drv/RemoteAdrPorts \
-	Drv/I2CDriverPorts
+	Drv/I2CDriverPorts 
+	
 
 REF_MODULES := \
 	Ref/Top \

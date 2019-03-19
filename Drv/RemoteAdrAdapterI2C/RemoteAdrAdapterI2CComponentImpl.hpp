@@ -62,7 +62,7 @@ namespace Drv {
 
       //! Handler implementation for remoteAdrBufferWrite
       //!
-      void remoteAdrBufferWrite_handler(
+      Drv::RemoteAdrAdapterI2CStatus remoteAdrBufferWrite_handler(
           const NATIVE_INT_TYPE portNum, /*!< The port number*/
           U8 baseaddr, /*!< The address that the first byte of the buffer will be read from, with read sequentially increasing from there*/
           Fw::Buffer &serBuffer /*!< Buffer containing data to write at remote address. We will attempt to write as many bytes as there are in the buffer.*/
@@ -70,7 +70,7 @@ namespace Drv {
 
       //! Handler implementation for remoteAdrWrite
       //!
-      void remoteAdrWrite_handler(
+      Drv::RemoteAdrAdapterI2CStatus remoteAdrWrite_handler(
           const NATIVE_INT_TYPE portNum, /*!< The port number*/
           U8 baseaddr, /*!< The device address that the value byte will be written to*/
           U8 value /*!< Value to write at the given address*/
@@ -78,7 +78,7 @@ namespace Drv {
 
       //! Handler implementation for remoteAdrBufferRead
       //!
-      void remoteAdrBufferRead_handler(
+      Drv::RemoteAdrAdapterI2CStatus remoteAdrBufferRead_handler(
           const NATIVE_INT_TYPE portNum, /*!< The port number*/
           U8 baseaddr, /*!< The address that the first byte of the buffer will be read from, with read sequentially increasing from there*/
           Fw::Buffer &serBuffer /*!< Buffer containing data to write at remote address. We will attempt to write as many bytes as there are in the buffer.*/
@@ -86,7 +86,7 @@ namespace Drv {
 
       //! Handler implementation for remoteAdrRead
       //!
-      void remoteAdrRead_handler(
+      Drv::RemoteAdrAdapterI2CStatus remoteAdrRead_handler(
           const NATIVE_INT_TYPE portNum, /*!< The port number*/
           U8 baseaddr, /*!< The device address that we will read from*/
           U8 *value /*!< value to be filled with the byte that we get back from the device.*/

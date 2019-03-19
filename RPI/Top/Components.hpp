@@ -33,6 +33,10 @@ void constructApp(int port_number, char* hostname);
 #include <Drv/LinuxSpiDriver/LinuxSpiDriverComponentImpl.hpp>
 #include <Drv/LinuxGpioDriver/LinuxGpioDriverComponentImpl.hpp>
 
+#include <Drv/LinuxI2CDriver/LinuxI2CDriverComponentImpl.hpp>
+#include <Drv/RemoteAdrAdapterI2C/RemoteAdrAdapterI2CComponentImpl.hpp>
+#include <Drv/AccelMPU9250/AccelMPU9250ComponentImpl.hpp>
+
 // Main app
 #include <RPI/RpiDemo/RpiDemoComponentImpl.hpp>
 
@@ -58,6 +62,11 @@ extern Svc::HealthImpl health;
 
 extern Drv::LinuxSerialDriverComponentImpl uartDrv;
 extern Drv::LinuxSpiDriverComponentImpl spiDrv;
+
+extern Drv::LinuxI2CDriverComponentImpl i2cDrv;
+extern Drv::RemoteAdrAdapterI2CComponentImpl remoteadri2c;
+extern Drv::AccelMPU9250ComponentImpl mpu9250;
+
 extern Drv::LinuxGpioDriverComponentImpl ledDrv;
 extern Drv::LinuxGpioDriverComponentImpl gpio23Drv;
 extern Drv::LinuxGpioDriverComponentImpl gpio24Drv;
