@@ -47,7 +47,8 @@ namespace Drv {
       //! Initialize object RemoteAdrAdapterI2C
       //!
       void init(
-          const NATIVE_INT_TYPE instance = 0 /*!< The instance number*/
+          const NATIVE_INT_TYPE instance = 0, /*!< The instance number*/
+          U8 i2cAddress = 1
       );
 
       //! Destroy object RemoteAdrAdapterI2C
@@ -56,6 +57,8 @@ namespace Drv {
 
     PRIVATE:
 
+      void setSlaveAddress();
+    
       // ----------------------------------------------------------------------
       // Handler implementations for user-defined typed input ports
       // ----------------------------------------------------------------------
@@ -91,8 +94,12 @@ namespace Drv {
           U8 baseaddr, /*!< The device address that we will read from*/
           U8 *value /*!< value to be filled with the byte that we get back from the device.*/
       );
-
-
+      
+      U8 _i2cAddress; /**< The I2C bus address of the device we're communicating with */
+      bool _initialized = false;
+      U32 _nReads = 0;
+      U32 _nWrites = 0;
+      
     };
 
 } // end namespace Drv

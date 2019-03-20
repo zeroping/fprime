@@ -1,4 +1,4 @@
-<interface name="RemoteAdrWriteBuffer" namespace="Ref">
+<interface name="RemoteAdrWriteBuffer" namespace="Drv">
     <import_serializable_type>Fw/Buffer/BufferSerializableAi.xml</import_serializable_type>
     <import_serializable_type>Drv/RemoteAdrPorts/RemoteAdrAdapterI2CStatusSerializableAi.xml</import_serializable_type>
     <comment>

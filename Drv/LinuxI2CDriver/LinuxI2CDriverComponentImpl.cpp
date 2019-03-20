@@ -28,7 +28,9 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <linux/types.h>
-#include <linux/spi/spidev.h>
+#include <linux/i2c.h>
+#include <linux/i2c-dev.h>
+//#include <i2c/smbus.h>
 #include <errno.h>
 
 //#define DEBUG_PRINT(x,...) printf(x,##__VA_ARGS__); fflush(stdout)
@@ -49,19 +51,23 @@ namespace Drv {
       )
     {
         if (this->m_fd == -1) {
+            DEBUG_PRINT("initialized I2C too early\r\n");
             return;
         }
-        /*
-         * Max speed in Hz
-         */
-        // TODO(mereweth)
-        int ret = -1; //ioctl(this->m_fd, , &busSpeed);
-        if (ret == -1) {
-            DEBUG_PRINT("ioctl fd %d failed. %d\n",this->m_fd,errno);
-            this->log_WARNING_HI_I2C_ConfigError(this->m_device,ret);
-        } else {
+        
+        m_addr = slaveAddr;
+        
+        //FIXME timeout is not supported (at all under linux?)
+        //FIXME busSpeed is not supported (at all under linux?)
+          
+//         int ret = -1;
+//         ioctl(this->m_fd, I2C_SLAVE, slaveAddr);
+//         if (ret == -1) {
+//             DEBUG_PRINT("ioctl fd %d failed. %d\n",this->m_fd,errno);
+//             this->log_WARNING_HI_I2C_ConfigError(this->m_device,ret);
+//         } else {
             DEBUG_PRINT("I2C fd %d WR freq successfully configured to %d\n",this->m_fd,busSpeed);
-        }
+//         }
     }
 
     void LinuxI2CDriverComponentImpl::I2CReadWrite_handler(
@@ -74,14 +80,41 @@ namespace Drv {
 
         DEBUG_PRINT("Writing %d bytes to I2C\n",writeBuffer.getsize());
 
-        // TODO(mereweth)
-        NATIVE_INT_TYPE stat = -1;
+        NATIVE_INT_TYPE ret = -1;
+        
+        
+        //we're going to ask to go two actions in our ioctl - a write (probably a register address), and then a read of the return data
+        struct i2c_rdwr_ioctl_data msglist;
+        struct i2c_msg msgs[2];
 
-        if (stat < 1) {
+        msglist.nmsgs = 2;
+        msglist.msgs = msgs;
+
+        //write message
+        msglist.msgs[0].addr = m_addr;
+        msglist.msgs[0].len = writeBuffer.getsize();
+        msglist.msgs[0].flags = 0;
+        msglist.msgs[0].buf = ((unsigned char *)writeBuffer.getdata());
+        
+        //read message
+        msglist.msgs[1].addr = m_addr;
+        msglist.msgs[1].len = readBuffer.getsize();
+        msglist.msgs[1].flags = I2C_M_RD | I2C_M_NOSTART; 
+        msglist.msgs[1].buf = ((unsigned char *)readBuffer.getdata());
+
+        
+        DEBUG_PRINT("ioctl I2C_RDWR going to write %d and read %d from 0x%x\n", msglist.msgs[0].len, msglist.msgs[1].len, m_addr);
+        
+        ret = ioctl(this->m_fd,I2C_RDWR,&msglist);
+          
+        if (ret < 1) {
+            DEBUG_PRINT("ioctl I2C_RDWR 0x%x failed. %d %s\n",this->m_fd,errno, strerror(errno));
             this->log_WARNING_HI_I2C_WriteError(this->m_device,
                                                 this->m_addr,
-                                                stat, 0, 0);
+                                                ret, 0, 0);
+            return;
         }
+        
         this->m_readBytes += readBuffer.getsize();
         this->m_writeBytes += writeBuffer.getsize();
         this->tlmWrite_I2C_ReadBytes(this->m_readBytes);
@@ -94,7 +127,7 @@ namespace Drv {
 
         this->m_device = device;
         NATIVE_INT_TYPE fd;
-        NATIVE_INT_TYPE ret;
+        unsigned long funcs;
 
         // Open:
         char devName[256];
@@ -105,14 +138,32 @@ namespace Drv {
 
         fd = ::open(devName, O_RDWR);
         if (fd == -1) {
-            DEBUG_PRINT("open I2C device %d.%d failed. %d\n",device,errno);
+            DEBUG_PRINT("open I2C device %d.%d failed. %d\n\r\n",device,errno);
             this->log_WARNING_HI_I2C_OpenError(device,fd);
             return;
         } else {
-            DEBUG_PRINT("Successfully opened I2C device %s fd %d\n",devName,fd);
+            DEBUG_PRINT("Successfully opened I2C device %s fd %d\n\r\n",devName,fd);
         }
 
         this->m_fd = fd;
+        
+        if (ioctl(fd, I2C_FUNCS, &funcs) < 0) {
+          this->log_WARNING_HI_I2C_OpenError(device,fd);
+          DEBUG_PRINT("failed to get I2C_FUNCS on %s\r\n",devName);
+          return;
+        }
+
+        if (funcs & I2C_FUNC_I2C) {
+          DEBUG_PRINT("I2C device %s supports I2C mode\r\n",devName);
+        } else if (funcs & I2C_FUNC_SMBUS_WORD_DATA) {
+          DEBUG_PRINT("I2C device %s supports SMBUS mode, but this drive only supports I2C mode\r\n",devName);
+          this->log_WARNING_HI_I2C_OpenError(device,fd);
+        } else {
+          DEBUG_PRINT("I2C device %s supports neither SMBUS nor I2C mode, and cannot be used\r\n",devName);
+          this->log_WARNING_HI_I2C_OpenError(device,fd);
+        }
+    
+        
     }
 
     LinuxI2CDriverComponentImpl::~LinuxI2CDriverComponentImpl(void) {

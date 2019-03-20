@@ -132,7 +132,7 @@ void constructApp(int port_number, char* hostname) {
 
     
     i2cDrv.init(0);
-    remoteadri2c.init(0);
+    remoteadri2c.init(0, 0x68);
     mpu9250.init(0);
    
     ledDrv.init(0);
@@ -153,6 +153,7 @@ void constructApp(int port_number, char* hostname) {
     fileDownlink.regCommands();
     health.regCommands();
     rpiDemo.regCommands();
+    mpu9250.regCommands();
 
     // read parameters
     prmDb.readParamFile();
@@ -214,27 +215,27 @@ void constructApp(int port_number, char* hostname) {
 //     if (not i2cDrv.open(1, Drv::I2C_FREQUENCY_100KHZ)) {
 //       return;
 //     }
-    i2cDrv.open(1, Drv::I2C_FREQUENCY_100KHZ);
+    i2cDrv.open(2, Drv::I2C_FREQUENCY_100KHZ);
     
 
 
-    if (not ledDrv.open(21,Drv::LinuxGpioDriverComponentImpl::GPIO_OUT)) {
+    if (not ledDrv.open(49,Drv::LinuxGpioDriverComponentImpl::GPIO_OUT)) {
         return;
     }
 
-    if (not gpio23Drv.open(23,Drv::LinuxGpioDriverComponentImpl::GPIO_OUT)) {
+    if (not gpio23Drv.open(26,Drv::LinuxGpioDriverComponentImpl::GPIO_OUT)) {
         return;
     }
 
-    if (not gpio24Drv.open(24,Drv::LinuxGpioDriverComponentImpl::GPIO_OUT)) {
+    if (not gpio24Drv.open(45,Drv::LinuxGpioDriverComponentImpl::GPIO_OUT)) {
         return;
     }
 
-    if (not gpio25Drv.open(25,Drv::LinuxGpioDriverComponentImpl::GPIO_IN)) {
+    if (not gpio25Drv.open(46,Drv::LinuxGpioDriverComponentImpl::GPIO_IN)) {
         return;
     }
 
-    if (not gpio17Drv.open(17,Drv::LinuxGpioDriverComponentImpl::GPIO_IN)) {
+    if (not gpio17Drv.open(47,Drv::LinuxGpioDriverComponentImpl::GPIO_IN)) {
         return;
     }
 

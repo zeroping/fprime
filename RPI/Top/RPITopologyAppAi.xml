@@ -122,6 +122,10 @@
         <source component = "rpiDemo" port = "CmdReg" type = "CmdReg" num = "0"/>
         <target component = "cmdDisp" port = "compCmdReg" type = "CmdReg" num = "6"/>
    </connection>
+   <connection name = "mpu9250Reg">
+        <source component = "mpu9250" port = "CmdReg" type = "CmdReg" num = "0"/>
+        <target component = "cmdDisp" port = "compCmdReg" type = "CmdReg" num = "7"/>
+   </connection>
 
     <!-- Command Dispatch Ports - Dispatch port number must match registration port for each component -->
 
@@ -771,6 +775,10 @@
    <connection name = "i2c">
         <source component = "remoteadri2c" port = "I2CReadWrite" type = "I2CReadWrite" num = "0"/>
         <target component = "i2cDrv" port = "I2CReadWrite" type = "I2CReadWrite" num = "0"/>
+   </connection>
+   <connection name = "i2cconfig">
+        <source component = "remoteadri2c" port = "I2CConfig" type = "I2CConfig" num = "0"/>
+        <target component = "i2cDrv" port = "I2CConfig" type = "I2CConfig" num = "0"/>
    </connection>
    
    <!-- I2C remote address connection -->

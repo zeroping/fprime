@@ -19,6 +19,7 @@
 
 
 #include <Drv/RemoteAdrAdapterI2C/RemoteAdrAdapterI2CComponentImpl.hpp>
+#include <Drv/LinuxI2CDriver/LinuxI2CDriverComponentImpl.hpp>
 #include "Fw/Types/BasicTypes.hpp"
 
 namespace Drv {
@@ -42,10 +43,13 @@ namespace Drv {
 
   void RemoteAdrAdapterI2CComponentImpl ::
     init(
-        const NATIVE_INT_TYPE instance
+        const NATIVE_INT_TYPE instance,
+        U8 i2cAddress
     ) 
   {
     RemoteAdrAdapterI2CComponentBase::init(instance);
+    _i2cAddress = i2cAddress;
+
   }
 
   RemoteAdrAdapterI2CComponentImpl ::
@@ -54,6 +58,20 @@ namespace Drv {
 
   }
 
+  void RemoteAdrAdapterI2CComponentImpl ::
+    setSlaveAddress()
+  {
+    if(_initialized) {
+      return;
+    }
+  
+    FW_ASSERT(isConnected_I2CConfig_OutputPort(0));
+  
+    I2CConfig_out((NATIVE_INT_TYPE)0, Drv::I2C_FREQUENCY_100KHZ, _i2cAddress, 100);
+    _initialized = true;
+  }
+  
+  
   // ----------------------------------------------------------------------
   // Handler implementations for user-defined typed input ports
   // ----------------------------------------------------------------------
@@ -95,7 +113,36 @@ namespace Drv {
         U8 *value
     )
   {
-    return Drv::RemoteAdrAdapterI2CStatus(REMOTEADR_FAILED);
+    setSlaveAddress();
+    
+    FW_ASSERT(isConnected_I2CReadWrite_OutputPort(0));
+    
+    /* We're going to address the device we want to talk to by its I2C address, then give a one-byte register address, then read one byte back as a response. */
+    
+    U8 writeArr[1];
+    U8 readArr[1];
+    writeArr[0] = baseaddr;
+
+    Fw::Buffer toWriteBuf;
+    toWriteBuf.setdata((U64)writeArr);
+    toWriteBuf.setsize(sizeof(writeArr));
+      
+    
+    Fw::Buffer toReadBuf;
+    toReadBuf.setdata((U64)readArr);
+    toReadBuf.setsize(sizeof(readArr));
+    
+    I2CReadWrite_out((NATIVE_INT_TYPE)0, toWriteBuf, toReadBuf);
+    
+    if(toReadBuf.getsize() < sizeof(readArr)) {
+      return Drv::RemoteAdrAdapterI2CStatus(REMOTEADR_FAILED);
+    }
+    *value = ((U8*)(toReadBuf.getdata())) [0];
+    
+    _nReads += 1;
+    tlmWrite_REMADR_Reads(_nReads);
+    
+    return Drv::RemoteAdrAdapterI2CStatus(REMOTEADR_SUCCESS);
   }
 
 } // end namespace Drv
