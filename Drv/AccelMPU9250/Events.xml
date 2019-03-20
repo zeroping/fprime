@@ -1,0 +1,7 @@
+<events>
+    <event id="0" name="ACCELMPU9250_InitError" severity="WARNING_HI" format_string = "Failed to initialize MPU9250" >
+        <comment>
+        Failed to initialize the MPU9250
+        </comment>
+    </event>
+</events>

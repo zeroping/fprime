@@ -1,0 +1,15 @@
+<interface name="Accel3Vec" namespace="Drv">
+    <import_serializable_type>Drv/IMUPorts/Vec3SerializableAi.xml</import_serializable_type>
+    <include_header>Fw/Time/Time.hpp</include_header>
+    <comment>
+    Passes an acceleration vector
+    </comment>
+    <args>
+      <arg name="tstamp" type="Fw::Time">
+        <comment>When the sample was taken</comment>
+      </arg>
+      <arg name="accel" type="Drv::Vec3">
+        <comment>Linear acceleration in meters per second squared</comment>
+      </arg>
+    </args>
+</interface>

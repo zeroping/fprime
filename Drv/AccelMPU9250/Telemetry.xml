@@ -1,0 +1,12 @@
+<telemetry>
+    <channel id="0" name="ACCELMPU9250_Updates" data_type="U32">
+        <comment>
+        Number of times we've gotten an update from the accel
+        </comment>
+    </channel>
+    <channel id="1" name="ACCELMPU9250_LastAccelData" data_type="Drv::Vec3">
+        <comment>
+        Last accel data
+        </comment>
+    </channel>
+</telemetry>

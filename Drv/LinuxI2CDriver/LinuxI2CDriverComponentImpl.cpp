@@ -82,28 +82,39 @@ namespace Drv {
 
         NATIVE_INT_TYPE ret = -1;
         
+        bool should_read = (readBuffer.getsize()>0);
+        bool should_write = (writeBuffer.getsize()>0);
         
         //we're going to ask to go two actions in our ioctl - a write (probably a register address), and then a read of the return data
+        // we'll skip the second part - the read - if we don't have any bytes that we're supposed to read.
         struct i2c_rdwr_ioctl_data msglist;
         struct i2c_msg msgs[2];
 
-        msglist.nmsgs = 2;
         msglist.msgs = msgs;
+        msglist.nmsgs = 0;
 
-        //write message
-        msglist.msgs[0].addr = m_addr;
-        msglist.msgs[0].len = writeBuffer.getsize();
-        msglist.msgs[0].flags = 0;
-        msglist.msgs[0].buf = ((unsigned char *)writeBuffer.getdata());
+        if(should_write) {
+          //write message
+          msglist.msgs[msglist.nmsgs].addr = m_addr;
+          msglist.msgs[msglist.nmsgs].len = writeBuffer.getsize();
+          msglist.msgs[msglist.nmsgs].flags = 0;
+          msglist.msgs[msglist.nmsgs].buf = ((unsigned char *)writeBuffer.getdata());
+          msglist.nmsgs += 1;
+        }
         
-        //read message
-        msglist.msgs[1].addr = m_addr;
-        msglist.msgs[1].len = readBuffer.getsize();
-        msglist.msgs[1].flags = I2C_M_RD | I2C_M_NOSTART; 
-        msglist.msgs[1].buf = ((unsigned char *)readBuffer.getdata());
-
+        if(should_read) {
+          //read message
+          msglist.msgs[msglist.nmsgs].addr = m_addr;
+          msglist.msgs[msglist.nmsgs].len = readBuffer.getsize();
+          msglist.msgs[msglist.nmsgs].flags = I2C_M_RD | I2C_M_NOSTART; 
+          msglist.msgs[msglist.nmsgs].buf = ((unsigned char *)readBuffer.getdata());
+          msglist.nmsgs += 1;
+        } 
         
-        DEBUG_PRINT("ioctl I2C_RDWR going to write %d and read %d from 0x%x\n", msglist.msgs[0].len, msglist.msgs[1].len, m_addr);
+        //make sure we have _something_ to do
+        FW_ASSERT(msglist.nmsgs > 0);
+        
+        DEBUG_PRINT("ioctl I2C_RDWR going to write %d and read %d from 0x%x\n", writeBuffer.getsize(), readBuffer.getsize(), m_addr);
         
         ret = ioctl(this->m_fd,I2C_RDWR,&msglist);
           
@@ -112,6 +123,8 @@ namespace Drv {
             this->log_WARNING_HI_I2C_WriteError(this->m_device,
                                                 this->m_addr,
                                                 ret, 0, 0);
+            writeBuffer.setsize(0);
+            readBuffer.setsize(0);
             return;
         }
         

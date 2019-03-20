@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?oxygen RNGSchema="file:../xml/ISF_Component_Schema.rnc" type="compact"?>
+
+<!--====================================================================== 
+
+  Fw
+  Serializable Type: Buffer
+
+======================================================================-->
+
+<serializable namespace="Drv" name="Vec3">
+  <comment>
+  A 3-vec of float values, useful for passing acceleration, rotational velocities, and mangetic field values around
+  </comment>
+  <members>
+    <member name="vals" type="F32" size="3">
+    </member>
+  </members>
+</serializable>
+

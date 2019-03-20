@@ -93,7 +93,35 @@ namespace Drv {
         U8 value
     )
   {
-    return Drv::RemoteAdrAdapterI2CStatus(REMOTEADR_FAILED);
+    setSlaveAddress();
+    
+    FW_ASSERT(isConnected_I2CReadWrite_OutputPort(0));
+    
+    /* We're going to address the device we want to talk to by its I2C address, then give a one-byte register address, then write one value into that register */
+    
+    U8 writeArr[2];
+    writeArr[0] = baseaddr;
+    writeArr[1] = value;
+
+    Fw::Buffer toWriteBuf;
+    toWriteBuf.setdata((U64)writeArr);
+    toWriteBuf.setsize(sizeof(writeArr));
+      
+    
+    Fw::Buffer toReadBuf;
+    toReadBuf.setdata((U64)0);
+    toReadBuf.setsize(0);
+    
+    I2CReadWrite_out((NATIVE_INT_TYPE)0, toWriteBuf, toReadBuf);
+/*    
+    if(toReadBuf.getsize() < sizeof(readArr)) {
+      return Drv::RemoteAdrAdapterI2CStatus(REMOTEADR_FAILED);
+    }
+    */
+    _nWrites += 1;
+    tlmWrite_REMADR_Writes(_nWrites);
+    
+    return Drv::RemoteAdrAdapterI2CStatus(REMOTEADR_SUCCESS);
   }
 
   Drv::RemoteAdrAdapterI2CStatus RemoteAdrAdapterI2CComponentImpl ::

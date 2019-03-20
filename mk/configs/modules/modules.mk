@@ -84,7 +84,8 @@ LINUX_DRV_MODULES := \
 	Drv/SpiDriverPorts \
 	Drv/GpioDriverPorts \
 	Drv/RemoteAdrPorts \
-	Drv/I2CDriverPorts 
+	Drv/I2CDriverPorts \
+	Drv/IMUPorts
 	
 
 REF_MODULES := \

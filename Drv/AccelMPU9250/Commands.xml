@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../Autocoders/schema/ISF/command_schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+
+<!--============ CmdSequencer Commands =================================== -->
+
+<commands>
+	<command kind="sync" opcode="0" mnemonic="ACCELMPU9250_ReadID">
+		<comment>Reads the WHOAMI byte to make sure that we have a working accelerometer</comment>
+		<args>
+			<arg type="U8" name="value">
+				<comment>The value read from the WHOAMI byte</comment>
+			</arg>
+		</args>
+	</command>
+<!--    <command kind="async" opcode="1" mnemonic="CS_Validate">
+        <comment>Validate a command sequence file</comment>
+        <args>
+            <arg type="string" name="fileName" size="240">
+                <comment>The name of the sequence file</comment>
+            </arg>
+        </args>
+    </command>-->
+
+</commands>

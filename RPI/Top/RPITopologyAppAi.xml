@@ -546,7 +546,14 @@
        <source component = "gpio17Drv" port = "Time" type = "Time" num = "0"/>
         <target component = "linuxTime" port = "timeGetPort" type = "Time" num = "0"/>
    </connection>
+   <connection name = "IMUTime">
+       <source component = "mpu9250" port = "Time" type = "Time" num = "0"/>
+        <target component = "linuxTime" port = "timeGetPort" type = "Time" num = "0"/>
+   </connection>
 
+   
+   
+   
    <!-- Rate Group Connections -->
    
    <!-- Linux Timer Connection -->
@@ -581,6 +588,10 @@
    <connection name = "rpiDemo1Hz">
        <source component = "rateGroup1HzComp" port = "RateGroupMemberOut" type = "Sched" num = "2"/>
         <target component = "rpiDemo" port = "Run" type = "Sched" num = "0"/>
+   </connection>
+   <connection name = "IMU1Hz">
+      <source component = "rateGroup1HzComp" port = "RateGroupMemberOut" type = "Sched" num = "3"/>
+      <target component = "mpu9250" port = "Run" type = "Sched" num = "0"/>
    </connection>
    
    <!-- Health Connections -->
@@ -786,6 +797,10 @@
    <connection name = "remoteaddri2c">
         <source component = "mpu9250" port = "remoteAdrRead" type = "RemoteAdrRead" num = "0"/>
         <target component = "remoteadri2c" port = "remoteAdrRead" type = "RemoteAdrRead" num = "0"/>
+   </connection>
+      <connection name = "remoteaddri2c">
+        <source component = "mpu9250" port = "remoteAdrWrite" type = "remoteAdrWrite" num = "0"/>
+        <target component = "remoteadri2c" port = "remoteAdrWrite" type = "remoteAdrWrite" num = "0"/>
    </connection>
    
 
