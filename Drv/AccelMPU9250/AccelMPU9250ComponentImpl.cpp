@@ -68,7 +68,7 @@ namespace Drv {
     // TODO
     Fw::Time now = getTime();
     
-    printf("accel component tick %d %d %d\r\n", now.getTimeBase(), now.getSeconds(), now.getUSeconds());
+    //printf("accel component tick %d %d %d\r\n", now.getTimeBase(), now.getSeconds(), now.getUSeconds());
     
     if(!_initialized)
     {
@@ -103,15 +103,65 @@ namespace Drv {
     
     U8 accelbyte = 0;
     remoteAdrRead_out(0, MPU9250_REG_ACCEL_XOUT_H, &accelbyte);
+    
+    U8 dataArr[14]; 
+    Fw::Buffer readBuf;
+    readBuf.setdata((U64)dataArr);
+    readBuf.setsize(sizeof(dataArr));
+      
+    remoteAdrBufferRead_out(0, MPU9250_REG_ACCEL_XOUT_H, readBuf);
     //We have (probably) gotten an accelerometer update
+    
+    I16 accel[3];
+    I16 gyro[3];
+    I16 temp;
+    NATIVE_UINT_TYPE sIdx;
+    NATIVE_UINT_TYPE sBase = 0;
+#ifdef LITTLE_ENDIAN // little-endian - x86
+    for (sIdx = 0; sIdx < 3; sIdx++) {
+        accel[sIdx] = ((int16_t) dataArr[2*sIdx+1+sBase]) << 8 |
+                        (int16_t) dataArr[2*sIdx+sBase];
+    }
+    sBase += 6;
+    temp = ((int16_t) dataArr[1+sBase]) << 8 |
+            (int16_t) dataArr[sBase];
+    sBase += 2;
+    for (sIdx = 0; sIdx < 3; sIdx++) {
+        gyro[sIdx] = ((int16_t) dataArr[2*sIdx+1+sBase]) << 8 |
+                        (int16_t) dataArr[2*sIdx+sBase];
+    }
+#else // big endian - ARM & Hexagon
+    for (sIdx = 0; sIdx < 3; sIdx++) {
+        accel[sIdx] = ((int16_t) dataArr[2*sIdx+sBase]) << 8 |
+                        (int16_t) dataArr[1+2*sIdx+sBase];
+    }
+    sBase += 6;
+    temp = ((int16_t) dataArr[sBase]) << 8 |
+            (int16_t) dataArr[1+sBase];
+    sBase += 2;
+    for (sIdx = 0; sIdx < 3; sIdx++) {
+        gyro[sIdx] = ((int16_t) dataArr[2*sIdx+sBase]) << 8 |
+                        (int16_t) dataArr[1+2*sIdx+sBase];
+    }
+#endif
+    
+    F32 accelfloats[3];
+    F32 gyrofloats[3];
+    
+    for (sIdx = 0; sIdx < 3; sIdx++) {
+        accelfloats[sIdx] = m_accelRawToMS2 * accel[sIdx];
+        gyrofloats[sIdx] = m_gyroRawToRadS * gyro[sIdx];
+    }
     
     m_updates+=1;
     tlmWrite_ACCELMPU9250_Updates(m_updates);
     
-    printf("accel value %d\r\n", accelbyte);
+    //printf("accel value %d %f\r\n", accel[0], accelfloats[0]);
     
-    //tlmWrite_ACCELMPU9250_LastAccelData();
+    Drv::Vec3 accelVec3(accelfloats, sizeof(accelfloats));
+    //tlmWrite_ACCELMPU9250_LastAccelData(accelVec3);
     
+    tlmWrite_ACCELMPU9250_gyroz(gyrofloats[2]*1000);
     
   }
   

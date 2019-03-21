@@ -44,8 +44,8 @@
          <port name="remoteAdrWrite" data_type="Drv::RemoteAdrWrite"  kind="output"  max_number="1">
         </port>
 
-         <!--<port name="remoteAdrBufferRead" data_type="Drv::RemoteAdrReadBuffer"  kind="output"  max_number="1">
-        </port>-->
+         <port name="remoteAdrBufferRead" data_type="Drv::RemoteAdrReadBuffer"  kind="output"  max_number="1">
+        </port>
 
          <port name="remoteAdrRead" data_type="Drv::RemoteAdrRead"  kind="output"  max_number="1">
         </port>

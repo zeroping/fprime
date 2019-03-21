@@ -589,8 +589,8 @@
        <source component = "rateGroup1HzComp" port = "RateGroupMemberOut" type = "Sched" num = "2"/>
         <target component = "rpiDemo" port = "Run" type = "Sched" num = "0"/>
    </connection>
-   <connection name = "IMU1Hz">
-      <source component = "rateGroup1HzComp" port = "RateGroupMemberOut" type = "Sched" num = "3"/>
+   <connection name = "IMU10Hz">
+      <source component = "rateGroup10HzComp" port = "RateGroupMemberOut" type = "Sched" num = "3"/>
       <target component = "mpu9250" port = "Run" type = "Sched" num = "0"/>
    </connection>
    
@@ -794,11 +794,15 @@
    
    <!-- I2C remote address connection -->
    
-   <connection name = "remoteaddri2c">
+   <connection name = "remoteaddri2cread">
         <source component = "mpu9250" port = "remoteAdrRead" type = "RemoteAdrRead" num = "0"/>
         <target component = "remoteadri2c" port = "remoteAdrRead" type = "RemoteAdrRead" num = "0"/>
    </connection>
-      <connection name = "remoteaddri2c">
+  <connection name = "remoteaddri2cbufread">
+        <source component = "mpu9250" port = "remoteAdrBufferRead" type = "remoteAdrBufferRead" num = "0"/>
+        <target component = "remoteadri2c" port = "remoteAdrBufferRead" type = "remoteAdrBufferRead" num = "0"/>
+   </connection>
+  <connection name = "remoteaddri2cwrite">
         <source component = "mpu9250" port = "remoteAdrWrite" type = "remoteAdrWrite" num = "0"/>
         <target component = "remoteadri2c" port = "remoteAdrWrite" type = "remoteAdrWrite" num = "0"/>
    </connection>

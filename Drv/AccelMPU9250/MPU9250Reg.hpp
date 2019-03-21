@@ -174,4 +174,5 @@ enum MPU9250Bits {
     MPU9250_BITS_I2C_MST_CLK_400_KHZ = 0x0D
 };
 
+
 } // end namespace Drv

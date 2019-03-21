@@ -9,4 +9,9 @@
         Last accel data
         </comment>
     </channel>
+    <channel id="2" name="ACCELMPU9250_gyroz" data_type="I32">
+        <comment>
+        demo gyro data
+        </comment>
+    </channel>
 </telemetry>
