@@ -3,10 +3,12 @@ include $(BUILD_ROOT)/mk/configs/compiler/defines_common.mk
 include $(BUILD_ROOT)/mk/configs/compiler/linux_common.mk
 include $(BUILD_ROOT)/mk/configs/compiler/gnu-common.mk
 
-CC :=  $(PI_TOOLS)/tools/arm-bcm2708/arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc
-CXX := $(PI_TOOLS)/tools/arm-bcm2708/arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++
-GCOV := $(PI_TOOLS)/tools/arm-bcm2708/arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcov
-AR := $(PI_TOOLS)/tools/arm-bcm2708/arm-linux-gnueabihf/bin/arm-linux-gnueabihf-ar
+PREFIX := /usr/bin/arm-linux-gnueabihf-
+
+CC :=  $(PREFIX)gcc
+CXX := $(PREFIX)g++
+GCOV := $(PREFIX)gcov
+AR := $(PREFIX)ar
 
 BUILD_32BIT := -m32
 
@@ -15,7 +17,7 @@ CC_MUNCH := $(BUILD_ROOT)/mk/bin/empty.sh
 LINK_LIB := $(AR)
 LINK_LIB_FLAGS := rcs
 LIBRARY_TO := 
-POST_LINK_LIB := $(PI_TOOLS)/tools/arm-bcm2708/arm-linux-gnueabihf/bin/arm-linux-gnueabihf-ranlib
+POST_LINK_LIB := $(PREFIX)ranlib
 
 LINK_BIN := $(CXX)
 LINK_BIN_FLAGS := -z muldefs $(LIBS) #$(BUILD_32BIT)

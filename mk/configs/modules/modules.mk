@@ -85,8 +85,11 @@ LINUX_DRV_MODULES := \
 	Drv/GpioDriverPorts \
 	Drv/RemoteAdrPorts \
 	Drv/I2CDriverPorts \
-	Drv/IMUPorts
-	
+	Drv/IMUPorts \
+	Drv/PWM/LinuxPwmDriver \
+	Drv/PWM/PwmDriverPorts\
+	Drv/RCServo/RCServo \
+	Drv/RCServo/RCServoPorts
 
 REF_MODULES := \
 	Ref/Top \

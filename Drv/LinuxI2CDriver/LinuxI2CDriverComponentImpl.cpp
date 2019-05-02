@@ -43,7 +43,15 @@ namespace Drv {
     // ----------------------------------------------------------------------
 
     void LinuxI2CDriverComponentImpl ::
-      I2CConfig_handler(
+    /**
+     * @brief ...
+     * 
+     * @param portNum p_portNum:...
+     * @param busSpeed p_busSpeed:...
+     * @param slaveAddr ${p_slaveAddr:...}
+     * @param timeout ${p_timeout:...}
+     */
+    I2CConfig_handler(
           const NATIVE_INT_TYPE portNum,
           U32 busSpeed,
           U32 slaveAddr,
@@ -57,17 +65,17 @@ namespace Drv {
         
         m_addr = slaveAddr;
         
-        //FIXME timeout is not supported (at all under linux?)
         //FIXME busSpeed is not supported (at all under linux?)
-          
-//         int ret = -1;
-//         ioctl(this->m_fd, I2C_SLAVE, slaveAddr);
-//         if (ret == -1) {
-//             DEBUG_PRINT("ioctl fd %d failed. %d\n",this->m_fd,errno);
-//             this->log_WARNING_HI_I2C_ConfigError(this->m_device,ret);
-//         } else {
+        
+        //We don't need to set up the I2C slave address, as that's done in the RDWR ioctl.
+        int ret = -1;
+        ioctl(this->m_fd, I2C_TIMEOUT, slaveAddr);
+        if (ret == -1) {
+            DEBUG_PRINT("ioctl fd %d failed. %d\n",this->m_fd,errno);
+            this->log_WARNING_HI_I2C_ConfigError(this->m_device,ret);
+        } else {
             DEBUG_PRINT("I2C fd %d WR freq successfully configured to %d\n",this->m_fd,busSpeed);
-//         }
+        }
     }
 
     void LinuxI2CDriverComponentImpl::I2CReadWrite_handler(
